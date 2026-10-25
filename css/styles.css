@@ -399,12 +399,28 @@ a.card:hover { border-color: #c8c0b4; color: inherit; }
 .footer a:hover { text-decoration: underline; }
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.3fr 1fr 1fr;
+  grid-template-columns: 1.2fr 1fr 1fr 1.35fr;
   gap: 1.5rem;
 }
 .footer h2 { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; }
 .footer ul { list-style: none; margin: 0; padding: 0; }
 .footer li { margin: 0.35rem 0; }
+
+.hours-list {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.55rem 0 0;
+  color: rgba(244, 241, 234, 0.86);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.hours-list > div {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, auto) 1fr;
+  column-gap: 1.25rem;
+  align-items: baseline;
+}
 .legal {
   margin-top: 1.5rem;
   padding-top: 1rem;
@@ -492,7 +508,13 @@ a.card:hover { border-color: #c8c0b4; color: inherit; }
 .side-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.2rem 1.25rem 1.3rem; }
 .side-card-muted { background: var(--paper); }
 .side-kicker { margin: 0 0 0.55rem; font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; color: var(--red); }
-.side-phone { margin: 0.85rem 0 1rem; }
+.side-phone { margin: 0.85rem 0 0.35rem; }
+
+.side-hours {
+  margin: 0 0 1rem;
+  color: var(--muted, #5e584f);
+  font-size: 0.95rem;
+}
 .side-phone a { font-family: Oswald, sans-serif; font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; color: var(--ink); text-decoration: none; }
 .side-links { list-style: none; margin: 0; padding: 0; }
 .side-links a { display: block; padding: 0.35rem 0; color: var(--red-dark); font-weight: 700; text-decoration: none; }

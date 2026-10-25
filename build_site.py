@@ -565,6 +565,18 @@ def header():
 </header>"""
 
 
+OFFICE_HOURS_DAYS = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+OFFICE_HOURS_TIME = "7 am – 7 pm"
+
+
+def office_hours_block():
+    rows = "".join(f"<div><span>{day}</span><span>{OFFICE_HOURS_TIME}</span></div>" for day in OFFICE_HOURS_DAYS)
+    return f'<div class="hours-list">{rows}</div>'
+
+
+OFFICE_HOURS = "Monday–Sunday: 7 am – 7 pm"
+
+
 def footer():
     service_items = "\n".join(f'<li><a href="{s["href"]}">{e(s["name"])}</a></li>' for s in SERVICES)
     return f"""<footer class="footer">
@@ -588,6 +600,10 @@ def footer():
         <li><a href="contact.html">Contact</a></li>
         <li><a href="sitemap.xml">Sitemap</a></li>
       </ul>
+    </div>
+    <div>
+      <h2>Office Hours</h2>
+      {office_hours_block()}
     </div>
   </div>
   <div class="wrap legal">© 2026 Concrete Youngstown. Estimates come from a look at the property.</div>
@@ -850,6 +866,7 @@ def service_page(s):
         <p class="side-kicker">Talk through the pour</p>
         <p>Call or send the address and what the slab is for. We will tell you if it is a repair, a replacement, or a different finish than you started with.</p>
         <p class="side-phone"><a href="tel:{PHONE_TEL}">{PHONE_DISP}</a></p>
+        <p class="side-hours">{OFFICE_HOURS}</p>
         <p><a class="btn btn-red" href="{estimate}">Request an estimate</a></p>
       </div>
       <div class="side-card side-card-muted">
