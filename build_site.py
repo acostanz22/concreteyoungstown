@@ -803,82 +803,67 @@ def service_page(s):
         f'<article class="factor"><span>{e(title)}</span><p>{e(text)}</p></article>'
         for title, text in s["costs"]
     )
-    related = "".join(
-        f'<a href="{o["href"]}">{e(o["name"])}</a>' for o in SERVICES if o["href"] != s["href"]
+    others = [o for o in SERVICES if o["href"] != s["href"]]
+    related = "".join(f'<li><a href="{o["href"]}">{e(o["name"])}</a></li>' for o in others)
+    second = others[(SERVICES.index(s)) % len(others)]
+    gallery = (
+        f'<div class="service-gallery">'
+        f'<figure class="service-shot"><img src="{s["img"]}" alt="{e(s["alt"])}" loading="lazy" decoding="async"></figure>'
+        f'<figure class="service-shot"><img src="{second["img"]}" alt="{e(second["alt"])}" loading="lazy" decoding="async"></figure>'
+        f'</div>'
     )
+    towns = "".join(f'<a href="{loc["href"]}">{e(loc["name"])}</a>' for loc in LOCATIONS)
+    estimate = "contact.html#quote"
     body = f"""
-<section class="page-hero" style="--hero: url('{s["hero"]}')">
-  <div class="wrap">
-    <p class="crumbs"><a href="index.html">Home</a> · <a href="services-850767-875359.html">Services</a> · {e(s["name"])}</p>
+<div class="crumb-bar"><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> · <a href="services-850767-875359.html">Services</a> · <span aria-current="page">{e(s["name"])}</span></nav></div></div>
+<section class="page-hero service-hero" style="--hero: url('{s["hero"]}')">
+  <div class="wrap service-hero-inner">
+    <p class="eyebrow">{e(s["name"])}</p>
     <h1>{e(s["h1"])}</h1>
-    <p>{e(s["intro"])}</p>
+    <p class="lede">{e(s["intro"])}</p>
     <div class="hero-actions">
       <a class="btn btn-red" href="tel:{PHONE_TEL}">Call {PHONE_DISP}</a>
-      <a class="btn btn-ghost" href="#quote">Request an estimate</a>
+      <a class="btn btn-ghost" href="{estimate}">Request an estimate</a>
     </div>
   </div>
 </section>
-<section class="section">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="kicker">When it is needed</p>
-      <h2>{e(s["when_title"])}</h2>
-    </div>
-    {li(s["when"])}
-  </div>
-</section>
-<section class="section" style="padding-top:0">
-  <div class="wrap">
-    <div class="media-row">
-      <img src="{s["img"]}" alt="{e(s["alt"])}">
-      <div>
+<section class="section service-body">
+  <div class="wrap service-layout">
+    <div class="service-main">
+      {gallery}
+      <div class="prose service-copy">
+        <h2>{e(s["when_title"])}</h2>
+        {li(s["when"])}
         <h2>{e(s["aside_title"])}</h2>
         <p>{e(s["aside"])}</p>
+        <h2>How the work goes</h2>
+        <div class="steps">{steps}</div>
+        <h2>What changes the estimate</h2>
+        <p>We do not publish a price per square foot. These are the items that move a quote once we see the lot.</p>
+        <div class="factors">{factors}</div>
+        <h2>Before you schedule</h2>
+        {faq_html(s["faqs"])}
       </div>
     </div>
+    <aside class="service-aside" aria-label="Estimate and related services">
+      <div class="side-card">
+        <p class="side-kicker">Talk through the pour</p>
+        <p>Call or send the address and what the slab is for. We will tell you if it is a repair, a replacement, or a different finish than you started with.</p>
+        <p class="side-phone"><a href="tel:{PHONE_TEL}">{PHONE_DISP}</a></p>
+        <p><a class="btn btn-red" href="{estimate}">Request an estimate</a></p>
+      </div>
+      <div class="side-card side-card-muted">
+        <p class="side-kicker">Related</p>
+        <ul class="side-links">{related}</ul>
+      </div>
+    </aside>
   </div>
 </section>
-<section class="section" style="padding-top:0">
+<section class="section section-towns" style="padding-top:0">
   <div class="wrap">
-    <div class="section-head">
-      <p class="kicker">Process</p>
-      <h2>How the work goes</h2>
-    </div>
-    <div class="steps">{steps}</div>
-  </div>
-</section>
-<section class="section" style="padding-top:0">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="kicker">Cost factors</p>
-      <h2>What changes the estimate</h2>
-      <p>We do not publish a price per square foot. These are the items that move a quote once we see the lot.</p>
-    </div>
-    <div class="factors">{factors}</div>
-  </div>
-</section>
-<section class="section" style="padding-top:0">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="kicker">Questions</p>
-      <h2>Before you schedule</h2>
-    </div>
-    {faq_html(s["faqs"])}
-  </div>
-</section>
-<section class="section" style="padding-top:0">
-  <div class="wrap">
-    <h2>Related services</h2>
-    <p>If this is a different slab than the one you need, start with <a href="{s["next"][0]}">{e(s["next"][1])}</a>.</p>
-    <div class="related">{related}</div>
-  </div>
-</section>
-<section class="section" style="padding-top:0">
-  <div class="wrap">
-    {tally_block()}
-    <div class="hero-actions" style="margin-top:1rem">
-      <a class="btn btn-dark" href="tel:{PHONE_TEL}">Call {PHONE_DISP}</a>
-    </div>
+    <h2>Towns we serve</h2>
+    <div class="towns">{towns}</div>
+    <p style="margin-top:1rem"><a href="service-areas.html">Service areas</a> · <a href="{estimate}">Request an estimate</a> · <a href="services-850767-875359.html">All services</a></p>
   </div>
 </section>
 """

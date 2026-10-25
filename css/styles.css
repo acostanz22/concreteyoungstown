@@ -466,3 +466,45 @@ a.card:hover { border-color: #c8c0b4; color: inherit; }
   .cards { grid-template-columns: repeat(2, 1fr); }
   .header-cta .btn-line { display: none; }
 }
+
+/* Service page layout: crumb bar, slim hero, content + sticky sidebar */
+.crumb-bar { background: #fff; border-bottom: 1px solid var(--line); }
+.crumb-bar .wrap { padding-top: 0.7rem; padding-bottom: 0.7rem; }
+.crumb-bar .crumbs { margin: 0; color: var(--muted); }
+.crumb-bar .crumbs a { color: var(--red-dark); text-decoration: none; }
+.crumb-bar .crumbs a:hover { text-decoration: underline; }
+.service-hero { padding: 2.4rem 0 2.6rem; }
+.service-hero .service-hero-inner { max-width: var(--max); }
+.service-hero .eyebrow { margin: 0 0 0.6rem; color: #ffd7d4; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.82rem; }
+.service-hero h1 { max-width: 20ch; }
+.service-hero .lede { max-width: 42rem; }
+.service-body { padding-top: 2rem; }
+.service-layout { display: grid; gap: 1.75rem; align-items: start; }
+.service-main { min-width: 0; }
+.service-gallery { display: grid; gap: 0.85rem; margin: 0 0 1.5rem; }
+.service-shot { margin: 0; border-radius: 14px; overflow: hidden; background: var(--line); }
+.service-shot img { display: block; width: 100%; height: 220px; object-fit: cover; }
+.service-copy { max-width: none; }
+.service-copy h2 { margin-top: 1.8rem; }
+.service-copy h2:first-child { margin-top: 0; }
+.service-copy .steps, .service-copy .factors { grid-template-columns: 1fr; margin-top: 0.8rem; }
+.service-aside { display: grid; gap: 1rem; }
+.side-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.2rem 1.25rem 1.3rem; }
+.side-card-muted { background: var(--paper); }
+.side-kicker { margin: 0 0 0.55rem; font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; color: var(--red); }
+.side-phone { margin: 0.85rem 0 1rem; }
+.side-phone a { font-family: Oswald, sans-serif; font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; color: var(--ink); text-decoration: none; }
+.side-links { list-style: none; margin: 0; padding: 0; }
+.side-links a { display: block; padding: 0.35rem 0; color: var(--red-dark); font-weight: 700; text-decoration: none; }
+.side-links a:hover { text-decoration: underline; text-underline-offset: 0.15em; }
+.section-towns h2 { margin-bottom: 0.85rem; }
+
+@media (min-width: 701px) {
+  .service-gallery { grid-template-columns: 1fr 1fr; }
+  .service-shot img { height: 250px; }
+  .service-copy .steps, .service-copy .factors { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 901px) {
+  .service-layout { grid-template-columns: minmax(0, 1.55fr) minmax(270px, 0.7fr); gap: 2rem; }
+  .service-aside { position: sticky; top: calc(var(--header) + 1.25rem); }
+}
