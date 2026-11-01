@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
-"""Generate the static Concrete Youngstown site."""
+"""Generate the static Youngstown Concrete Contractors site."""
 import html
 import pathlib
+import re
 
 ROOT = pathlib.Path(__file__).resolve().parent
 PHONE_DISP = "(330) 293-2914"
 PHONE_TEL = "+13302932914"
 SITE = "https://www.concreteyoungstown.net"
-SOURCE = "Concrete%20Youngstown"
+BRAND = "Youngstown Concrete Contractors"
+SOURCE = "Youngstown%20Concrete%20Contractors"
 TALLY = (
     "https://tally.so/embed/xX6B0y?alignLeft=1&hideTitle=1"
     "&transparentBackground=1&dynamicHeight=1&source=" + SOURCE
@@ -16,272 +18,13 @@ TALLY = (
 def e(text):
     return html.escape(text, quote=True)
 
-LOGO = """<svg class="logo-mark" viewBox="0 0 42 42" aria-hidden="true">
-  <rect x="3" y="6" width="36" height="30" rx="3" fill="none" stroke="#ffffff" stroke-width="2.4"/>
-  <path d="M3 21h36" stroke="#d0121a" stroke-width="2.4"/>
-  <path d="M21 6v30" stroke="#ffffff" stroke-width="1.6" opacity="0.55"/>
-</svg>"""
-
-SERVICES = [
-    {
-        "href": "stamped-concrete.html",
-        "name": "Stamped Concrete",
-        "card": "Patterns pressed into fresh concrete for patios, walks, and driveways. Choose the pattern before the pour. Stamping finishes new flatwork. It does not repair a slab that has already cracked or settled.",
-        "img": "images/stamped-2.jpg",
-        "alt": "Smoothing fresh concrete with a hand float before a decorative finish",
-        "title": "Stamped Concrete in Youngstown, Ohio | Concrete Youngstown",
-        "desc": "Stamped concrete for Youngstown patios, walks, and driveways. Pattern, color, and texture are set on site before the pour. Call (330) 293-2914.",
-        "h1": "Stamped Concrete in Youngstown, Ohio",
-        "hero": "images/stamped-2.jpg",
-        "intro": "Stamped concrete is a way to put a stone, slate, or brick pattern into a new slab while it is still workable. Homeowners in Youngstown use it for patios, front walks, and sometimes driveways when they want that look without setting individual pavers. The pattern, color, and texture have to be chosen before the truck is scheduled.",
-        "when_title": "When stamped concrete is the right job",
-        "when": [
-            "You want a patio or walk with the look of stone or brick, and the area is being poured new.",
-            "A broom-finish slab is structurally fine for the job, but the plain gray surface is not the look you want at the back door or the front walk.",
-            "The existing concrete has failed. Stamping does not go on top of a cracked or rocking slab. That is a replacement, then a stamp on the new pour.",
-        ],
-        "aside_title": "The pattern is part of the pour",
-        "aside": "Mats are pressed while the surface is still plastic, then a release agent keeps the mats from sticking. Once the slab has hardened, the pattern is in the concrete. A later stain can shift the color, but it will not add a texture that was never stamped.",
-        "process": [
-            ("01", "Choose the pattern", "We look at the area, the sun, and how the space is used, then pick a pattern and color that fit. A busy stamp on a small walk can look crowded. A quieter texture often wears better on a driveway."),
-            ("02", "Prepare the base", "The old material comes out if it has failed. The grade is set so water leaves the house, and forms are placed for the thickness the use requires."),
-            ("03", "Pour and stamp", "Concrete is placed, leveled, and stamped in the window while it can still take a print. Edges, joints, and any steps are finished in the same visit."),
-            ("04", "Cure, then wash", "The surface needs time before it is washed and opened to use. We tell you when foot traffic is reasonable. Furniture and vehicles wait longer, especially on cold nights."),
-        ],
-        "costs": [
-            ("Area and shape", "A simple rectangle is a different pour from a patio with a curve, a step, or a seat edge. More edge and more cuts take more time."),
-            ("Pattern and color", "Integral color, release, and the stamp mats themselves change the job. A single field pattern costs less to place than a border plus a field."),
-            ("Removal and access", "Breaking out an old patio, hauling it, and moving concrete by buggy through a side yard all show up on the estimate."),
-            ("Base and drainage", "Soft spots, a slope toward the house, or a patio that has to meet a door threshold can add base work before anyone stamps a pattern."),
-            ("Sealer later", "Many stamped surfaces are sealed after they cure. That is a separate step from the pour, and it is maintenance, not a one-time shield against salt or snow shovels."),
-        ],
-        "faqs": [
-            ("Can you stamp a driveway, or only a patio?", "We can stamp a driveway if the slope, the joints, and the texture still make sense for cars and for winter. A deep, irregular stone pattern can be harder to shovel and can hold ice. A lighter texture is often the better driveway choice. We will say so on the walkthrough if the pattern you like belongs on the patio instead."),
-            ("Does stamped concrete get slippery when it rains or ices over?", "A textured stamp usually has more grip than a hard-troweled, slick finish. A sealed surface can still be slippery when it is wet or icy, which matters on a walk and near a door. We pick texture with that in mind. No finish is a substitute for clearing snow and ice."),
-            ("Can you stamp over the concrete I already have?", "No. The pattern has to be pressed into concrete that is still fresh. If the slab you have is sound and you only want color, look at stained concrete. If it is cracked, scaled, or settled, the honest fix is removal and a new pour."),
-            ("How do I choose a pattern without seeing it on my house?", "We narrow it to a few patterns that fit the size of the area and the style of the house, and we look at samples in daylight. A small sample will not match the full patio exactly, because release color and the hand work vary across a larger surface. The goal is a pattern you can live with, not a catalog photo."),
-            ("Will a sealer keep road salt from marking the surface?", "A sealer can slow staining and make the color easier to clean. It does not make the slab immune to salt, fertilizer, or a metal shovel. Plan on renewing sealer when it wears, and go easy on deicers the first winter. We will not tell you a sealer is a warranty against Ohio winters."),
-            ("How long before we can put the table back?", "Foot traffic comes before furniture. Legs and grill wheels point-load a young slab, so the wait is longer than walking across it. Cold weather stretches that window. We will give you a clear time before we leave, based on the pour and the forecast."),
-        ],
-        "next": ("concrete-driveways.html", "Concrete driveways"),
-    },
-    {
-        "href": "concrete-driveways.html",
-        "name": "Concrete Driveways",
-        "card": "New and replacement driveways for homes around Youngstown. The job covers removal, a compacted base, the pour, and a finish sloped off the garage. Thickness follows the vehicles that will use it.",
-        "img": "images/driveways-1.jpg",
-        "alt": "A worker floating a freshly poured concrete driveway",
-        "title": "Concrete Driveways in Youngstown, Ohio | Concrete Youngstown",
-        "desc": "Concrete driveway replacement and new pours in Youngstown, Ohio. Removal, base, slope, and finish are set on site. Call (330) 293-2914 for an estimate.",
-        "h1": "Concrete Driveways in Youngstown, Ohio",
-        "hero": "images/driveways-1.jpg",
-        "intro": "A concrete driveway in Youngstown has to live with freeze-thaw, road salt, and the clay soils common through the Mahoning Valley. Most of the calls we get are replacements: the old slab is scaled, cracked into pieces, or pitched back toward the garage. We measure the drive, the garage lip, and the sidewalk before we talk about a price.",
-        "when_title": "When a driveway needs to be replaced",
-        "when": [
-            "The surface is scaling or pitting from salt and freeze-thaw, and the paste is gone down to the stone.",
-            "Slabs have settled, rocked, or heaved so water sits against the garage or runs toward the foundation.",
-            "Cracks have opened wide enough that a joint filler will not hold, or the drive is too high to meet the sidewalk.",
-        ],
-        "aside_title": "Slope and the garage floor",
-        "aside": "The new drive has to meet the garage without a trip lip and still fall away from the house. On a short Youngstown driveway that can be a tight bit of grade. We set that before forms go in, not after the concrete is down.",
-        "process": [
-            ("01", "Measure the drive", "We check length, width, garage height, sidewalk elevation, and where water goes now. Photos help us call you back. They are not a substitute for standing on the lot."),
-            ("02", "Remove what failed", "Broken concrete is broken out and hauled away when it cannot stay. A sound panel can sometimes remain and be tied to the new work. We do not pour a thin layer over a slab that is still moving."),
-            ("03", "Base, forms, pour", "The stone base is compacted, forms are set, and the concrete is placed and finished. Control joints are cut or tooled so the slab has a place to crack in a straight line."),
-            ("04", "Cure before you park", "Passenger cars stay off for several days. Cold nights make that longer. We will tell you the wait before we leave. The slab keeps gaining strength after that."),
-        ],
-        "costs": [
-            ("Square footage and thickness", "A passenger-car drive is often about 4 inches over a compacted base. A truck, a boat, or a dumpster pad needs more thickness. We set that from how you use the drive."),
-            ("Removal and disposal", "Breaking out a thick old slab, and getting the debris off a tight lot, is a large part of many replacement estimates."),
-            ("Access", "If the truck cannot reach the forms, concrete moves by buggy or pump. Narrow side yards in older neighborhoods change the price more than the finish does."),
-            ("Reinforcement and joints", "Wire or rebar, and the joint layout, depend on the shape of the drive and the base under it. A long, narrow drive is jointed differently from a wide apron."),
-            ("Finish and drainage", "Broom finish is the usual driveway surface. A stamp, a thickened edge, a drain, or rebuilding the swale beside the drive are extras we price only if the lot needs them."),
-        ],
-        "faqs": [
-            ("How thick should a residential driveway be?", "For cars, about 4 inches of concrete over a compacted aggregate base is the usual residential section. Heavier vehicles need a thicker slab, sometimes only in the parking area. We will not quote a thickness from the curb. It depends on the soil, the base, and what you park."),
-            ("Can you match the height of my garage floor?", "Yes, that is part of the layout. The drive should meet the slab at the garage without holding water against the door, and it still needs to drain to the street or a yard swale. If the old drive was raised with overlays, we may have to come down to a workable height."),
-            ("Do you broom-finish a driveway, or can it be stamped?", "Broom finish is the standard. It sheds water, takes salt and shovels, and is the right surface for most drives. Stamping is available when you want a pattern, with a texture you can still shovel. See the stamped concrete page if that is the look you are after."),
-            ("What happens to the old concrete?", "If the slab is failed, we break it out and haul it off. If one panel is sound and at the right height, we can sometimes leave it and dowel the new concrete to it. Leaving a moving slab in place and covering it is how a new surface cracks along the old lines."),
-            ("How long before I can drive on it?", "Plan on several days for a passenger car, and longer when the nights are near freezing. Walking on it comes first. We set the actual day from the temperature and the mix before we leave, rather than promising a clock time in advance."),
-            ("Will road salt ruin a new driveway?", "Salt and freeze-thaw are hard on any exterior concrete in Youngstown. Air-entrained concrete, joints, and a sound base are how a drive gets through winter. They do not make the surface immune. Go light on deicers the first winter, keep fertilizer off the slab, and shovel with a plastic blade when you can."),
-        ],
-        "next": ("asphalt-paving.html", "Asphalt paving"),
-    },
-    {
-        "href": "asphalt-paving.html",
-        "name": "Asphalt Paving",
-        "card": "Asphalt drives and small parking areas where a flexible surface fits the lot. Grading, a stable base, and a paved layer that sheds water are the work. The pavement itself is not a drain.",
-        "img": "images/asphalt-2.jpg",
-        "alt": "Breaking out a failed pavement surface before a new driveway is placed",
-        "title": "Asphalt Paving in Youngstown, Ohio | Concrete Youngstown",
-        "desc": "Asphalt driveway and small-lot paving in Youngstown, Ohio. Grade, base, and a surface that sheds water. Call (330) 293-2914 to schedule a look.",
-        "h1": "Asphalt Paving in Youngstown, Ohio",
-        "hero": "images/asphalt-2.jpg",
-        "intro": "Asphalt is a flexible pavement. It can be a practical driveway or small parking area when the lot needs a surface that can flex a little and still shed water. Standard asphalt is not a porous drain. If the grade sends water at the garage, a new black surface will send it there too. We fix the slope as part of the paving, not as an afterthought.",
-        "when_title": "When asphalt paving fits",
-        "when": [
-            "An old asphalt drive has alligator cracking, potholes, or edges that have crumbled back to the stone.",
-            "A gravel drive ruts every spring and you want a paved surface for two cars, not a structural concrete slab.",
-            "A small parking pad beside a shop or a house needs paving, and concrete is not the better fit for how the base moves.",
-        ],
-        "aside_title": "Water has to leave the surface",
-        "aside": "Dense asphalt sheds water. It does not soak it up. The base under it still has to be stable, and the surface still has to slope away from buildings. A pretty overlay on a sunken, wet base will crack in the same pattern as the pavement it covered.",
-        "process": [
-            ("01", "Look at the failure", "Alligator cracks usually mean the base, not just the top. A few potholes in an otherwise sound drive are a different repair than a full mill and pave. We say which one you are looking at."),
-            ("02", "Grade and base", "Soft material comes out. Stone goes down and is compacted. Edges are held so the mat does not ravel at the grass."),
-            ("03", "Pave and compact", "Asphalt is placed and rolled while it is hot enough to compact. Thickness follows the use: a car drive is not a dumpster lane."),
-            ("04", "Stay off it while it cools", "You can usually walk a new mat sooner than you can park on it. Hot weather keeps it tender longer. We will tell you when to pull the car back in."),
-        ],
-        "costs": [
-            ("Area and thickness", "Square footage and how many inches of asphalt the traffic needs are the core of the price. A thin skin over a failed base is not a bargain."),
-            ("Removal", "Milling or tearing out old asphalt, and hauling it, is separate from the new tonnage."),
-            ("Base stone", "A gravel drive that was never built as a pavement often needs stone and grading before the first pass of asphalt."),
-            ("Edges and access", "Paving against a garage, a fence, or a tight turn from the street takes more hand work than an open rectangle."),
-            ("Drainage", "Rebuilding a swale, raising a settled center, or keeping water out of a basement stair is part of the job when the lot requires it."),
-        ],
-        "faqs": [
-            ("Should I choose asphalt or concrete for a Youngstown driveway?", "Concrete is rigid. It wants a stable base and joints, and it handles summer heat without going soft. Asphalt flexes more, which can suit a base that moves a little, and it is usually faster to put back in service. Both fail if water sits under them. If your lot could go either way, we will talk through it on the visit rather than picking from a slogan."),
-            ("Can you pave over the old asphalt?", "Only if the old mat is stable, the edges are sound, and adding height will not block the garage door or send water at the house. Alligator cracking and a soft base need to come out. An overlay on that kind of failure copies the cracks into the new surface."),
-            ("How soon can we drive on new asphalt?", "Often the same day or the next, once the mat has cooled and set, but a hot afternoon can keep it tender. Turning the steering wheel in place will scuff a fresh drive. We will give you a time before we leave, matched to the weather that day."),
-            ("Do you fill potholes, or only repave the whole drive?", "A tight pothole in a sound drive can be patched. A drive that is a map of cracks needs replacement, because the patch will sit in the same failed base. We would rather tell you that on the visit than sell a patch that will open up by spring."),
-            ("Does asphalt drain water through the surface?", "Ordinary driveway asphalt does not. It is paved to shed water to the side or the street. If someone told you asphalt is a porous drainage system, that is a different product than a standard residential mat. Your drive still needs slope."),
-            ("When would you seal an asphalt drive?", "Sealer is maintenance on a sound mat, usually after the asphalt has cured, not on the day it is paved. It is not a fix for cracks that go through the mat or for a base that has failed. If you need sealing later, ask when we look at the drive and we will tell you whether the surface is a candidate."),
-        ],
-        "next": ("stained-concrete.html", "Stained concrete"),
-    },
-    {
-        "href": "stained-concrete.html",
-        "name": "Stained Concrete",
-        "card": "Color on a sound slab when the concrete is still solid. It changes the look of a patio, walk, or floor. Stain will not bridge cracks or level a section that has settled.",
-        "img": "images/stained-1.jpg",
-        "alt": "Screeding a fresh concrete slab before the surface is finished",
-        "title": "Stained Concrete in Youngstown, Ohio | Concrete Youngstown",
-        "desc": "Stained concrete for sound patios, walks, and interior slabs in Youngstown. Color does not repair cracks or settlement. Call (330) 293-2914.",
-        "h1": "Stained Concrete in Youngstown, Ohio",
-        "hero": "images/stained-1.jpg",
-        "intro": "Stain is a color treatment for concrete that is still sound. It can warm up a gray patio, a porch slab, or an interior floor. It is not a resurfacing product. If the slab is scaled from salt, cracked into panels, or tipped toward the house, color will follow every flaw. In that case the conversation is about replacement, not stain.",
-        "when_title": "When stain is worth doing",
-        "when": [
-            "The slab is flat, solid, and you want color without breaking it out.",
-            "A new patio or walk is being poured and you want color in or on the surface as part of that job.",
-            "You are comparing stain to paint. Paint sits on top and peels. Stain, especially a reactive stain, works in the paste and wears differently.",
-        ],
-        "aside_title": "The slab has to be ready",
-        "aside": "Stain needs a clean, open surface. Sealer, glue, oil, and heavy curing compound block it. We look at the slab first. If the concrete is too tight, too dirty, or too far gone, we will say stain is the wrong tool.",
-        "process": [
-            ("01", "Test the slab", "We check for sealer, moisture issues, cracks, and whether the surface will take stain. A small test spot tells more than a color chart."),
-            ("02", "Clean and prep", "The surface is cleaned so the stain can reach the paste. Coatings that would resist the stain come off, or we stop and talk about another finish."),
-            ("03", "Apply the color", "Stain goes down and is worked for an even, mottled, or bordered look, depending on what the concrete will actually do. Concrete color is never as uniform as paint from a can."),
-            ("04", "Rinse, dry, protect", "Reactive stains are neutralized and rinsed. The slab has to dry before any sealer. We will tell you when you can walk it and when furniture can come back."),
-        ],
-        "costs": [
-            ("Condition of the slab", "A clean broom finish is straightforward. A sealed, painted, or oil-stained slab can take more prep than the coloring itself."),
-            ("Interior or exterior", "An outdoor patio deals with sun, salt, and water. An interior floor deals with foot traffic and rugs. The products and the dry time are not the same."),
-            ("Color and variation", "One translucent color is a different application from a layered or sawcut pattern. More detail means more time on the surface."),
-            ("Repairs first", "Open cracks, spalls, and trip edges have to be addressed before color, or the stain will highlight them. Some of those repairs are a separate scope."),
-            ("Sealer", "Exterior sealer is what makes the color easier to live with. It is a maintenance coating. Sun and shovels wear it off, and it will need to be renewed."),
-        ],
-        "faqs": [
-            ("Will stain hide cracks in my patio?", "No. Stain follows the surface. A crack, a patch, and a trowel mark will still be visible, and color often makes them easier to see. If the crack is a joint doing its job, that is fine. If the slab has separated or settled, fix that before you spend money on color."),
-            ("Can you stain a driveway that salt has damaged?", "If the paste is scaling and the stone is showing, stain will look blotchy and will not put the surface back. That driveway wants a replacement or, if the damage is truly shallow and the slab is stable, a different conversation. We will not stain a failing drive and call it repaired."),
-            ("What is the difference between stain and paint?", "Paint is a film. It can peel when moisture gets behind it, which is common on an exterior slab. Acid and water-based stains color the concrete itself or soak into it. The result is mottled, not a solid paint chip. If you want a flat, uniform paint color, stain will disappoint you, and paint will disappoint you the first time it peels."),
-            ("Can you match a stain color from a photo?", "We can get close to a family of colors: warm brown, tan, terra cotta, soft gray. Concrete takes stain differently from one slab to the next, so a photo from another house is a target, not a promise. A test spot on your concrete is the honest sample."),
-            ("Do you stain basement floors and garage slabs?", "Yes, if the slab is sound and dry enough for the product. A garage that takes salt off the car is a hard place for a decorative finish. A basement with moisture coming through the slab needs that problem solved first. Tell us which room it is when you call."),
-            ("How do I take care of a stained patio?", "Sweep it, keep fertilizer and harsh deicers off it, and expect to renew the sealer when water no longer beads. Do not scrub it with a harsh acid. If the sealer is worn and the color is still even, maintenance is usually a cleaning and a new coat, not a new stain."),
-        ],
-        "next": ("concrete-patios.html", "Concrete patios"),
-    },
-    {
-        "href": "concrete-patios.html",
-        "name": "Concrete Patios",
-        "card": "A level slab outside the back door for a table, a grill, and a drier path. Slope, joints, and thickness are set for Mahoning Valley freeze-thaw, not only for a clear summer weekend.",
-        "img": "images/patios-1.jpg",
-        "alt": "Hand-floating the edge of a new concrete patio slab",
-        "title": "Concrete Patios in Youngstown, Ohio | Concrete Youngstown",
-        "desc": "Concrete patio installation in Youngstown, Ohio. Slope, joints, and thickness planned for freeze-thaw and backyard drainage. Call (330) 293-2914.",
-        "h1": "Concrete Patios in Youngstown, Ohio",
-        "hero": "images/patios-1.jpg",
-        "intro": "A patio is the flatwork outside the door you actually use. In Youngstown that means a slab that stays put through freeze-thaw, slopes away from the house, and gives you a place for a table that does not rock. We pour broom-finish and stamped patios, and we replace old slabs that have heaved or that hold water against the foundation.",
-        "when_title": "When a patio is the right project",
-        "when": [
-            "The back door opens onto mud, uneven pavers, or a slab that pitches toward the house.",
-            "You want a defined place for seating and a grill, with a walk that connects to the driveway or the side gate.",
-            "An old patio has cracked into a trip hazard, or frost has lifted a corner every winter.",
-        ],
-        "aside_title": "Keep water off the wall",
-        "aside": "The patio should fall away from the foundation, about enough to move rain without feeling steep under a chair. Downspouts that dump into the same corner will undo a good slope. We look at those before we set forms.",
-        "process": [
-            ("01", "Lay out the size", "We mark the patio against the door, the steps, and anything you need to keep, such as an egress window or a hose bib. Bigger is not always better if it blocks drainage."),
-            ("02", "Excavate and base", "Topsoil comes out. Stone goes in and is compacted. Organic soil left underneath is why a patio settles on one side."),
-            ("03", "Form and pour", "Forms set the slope and the thickness. Concrete is placed, struck off, and finished. Joints are laid out so a crack has a straight place to go."),
-            ("04", "Cure, then furnish", "Keep pets, grills, and furniture off until we say the surface is ready. A cold week in spring changes the calendar. We would rather you wait than scar the finish."),
-        ],
-        "costs": [
-            ("Size and thickness", "Area drives the concrete yardage. A patio that will hold a hot tub or a heavy kitchen island needs a thicker section than a chair and a grill."),
-            ("Steps and edges", "A step down to the yard, a thickened edge, or a turn around a bay window adds forming. A rectangle on flat ground is the simple version."),
-            ("Removal", "An old slab, pavers, or a timber border have to come out and leave. Tight gates mean the debris moves by hand."),
-            ("Decorative finish", "Broom finish is the baseline. Integral color or a stamp is a different scope. Those choices are on the stamped concrete page if you want pattern, not just a slab."),
-            ("Drainage and access", "Regrading a low spot, extending a downspout, or buggy-ing concrete through the house or a side yard changes the labor more than the concrete price."),
-        ],
-        "faqs": [
-            ("How much slope does a patio need?", "Enough to move water away from the house without making the table feel tilted. We set that in the forms. A dead-flat patio holds ice and rain against the wall. A steep one is unpleasant to sit on. The right fall is a site decision, not a single number for every yard."),
-            ("Can you pour a patio up to the back door?", "Yes, if the threshold, the siding, and any step can be detailed so water does not run inside. We will not bury siding or block a weep. If the door is low to the yard, the patio may need to stay slightly below the threshold, with the slope still leaving the house."),
-            ("Do I have to remove pavers before a concrete patio?", "Yes. Pavers, sand, and the old base come out so the new stone base sits on firm soil. Pouring over pavers is how the slab rocks later. If some edging or a short walk can stay, we will tell you on site."),
-            ("Broom finish or stamped for a backyard patio?", "Broom finish is simpler, grips well, and costs less. Stamped concrete is for when the look of the patio matters as much as the floor space. Both are concrete slabs. The base and the slope are the same kind of work. The finish is what changes."),
-            ("Can you add a walk from the patio to the driveway?", "Yes. A walk is often poured with the patio so the joint between them is planned. Tell us if you need room for a mower or a trash bin. A walk that is too narrow becomes the thing you step off every week."),
-            ("When can we put furniture on a new patio?", "After the slab has cured enough for point loads. That is longer than the wait for walking, and longer still if nights drop near freezing. We will leave you with a day, not a guess. Dragging a metal table across a green slab will mark it."),
-        ],
-        "next": ("concrete-installation.html", "Concrete installation"),
-    },
-    {
-        "href": "concrete-installation.html",
-        "name": "Concrete Installation",
-        "card": "Sidewalks, aprons, shed pads, and other flatwork beyond a full driveway or patio. Each pour is formed for the load it will carry, with joints and drainage set before the concrete truck arrives.",
-        "img": "images/installation-1.jpg",
-        "alt": "Finishing the edge of a newly poured concrete sidewalk",
-        "title": "Concrete Installation in Youngstown, Ohio | Concrete Youngstown",
-        "desc": "Concrete flatwork in Youngstown, Ohio: sidewalks, aprons, shed pads, and small slabs. Formed and finished for the load. Call (330) 293-2914.",
-        "h1": "Concrete Installation in Youngstown, Ohio",
-        "hero": "images/installation-1.jpg",
-        "intro": "Concrete installation, on this site, means the flatwork that is not already covered by a driveway or a patio: sidewalks, garage aprons, shed and equipment pads, small approaches, and replacement panels. We form it, place it, and finish it for the load and the weather in the Mahoning Valley. We are not a structural builder of buildings or bridges.",
-        "when_title": "When you need a separate pour",
-        "when": [
-            "A sidewalk panel has heaved into a trip edge, or a city-side walk is yours to replace up to the property line.",
-            "You need a pad for a shed, a condenser, a dumpster, or a small parking spot off the main drive.",
-            "The apron in front of the garage has broken away from the driveway, and the rest of the drive can stay.",
-        ],
-        "aside_title": "Match the pour to the load",
-        "aside": "A 4-inch sidewalk and a pad that will hold a loaded trailer are not the same slab. Thickness, base, and reinforcement follow the use. We ask what will sit on it before we order concrete.",
-        "process": [
-            ("01", "Define the pad or walk", "We measure, check the property side of any public walk, and note doors, gates, and utilities. A small pad still needs a plan for water."),
-            ("02", "Cut out and base", "Failed concrete is sawed or broken at a joint when only a panel is going. The base is compacted so the new section does not become the low spot."),
-            ("03", "Form, place, finish", "Forms hold the line and the slope. Concrete is placed and finished to match the adjacent slab as closely as a new pour can. A patch will not be invisible."),
-            ("04", "Joint and cure", "Joints line up with the old work where they should. The new concrete stays protected from pets, salt, and loads until it can take them."),
-        ],
-        "costs": [
-            ("Quantity", "A single sidewalk panel is a different mobilization than a long walk plus a pad. Small pours still need a crew and a truck."),
-            ("Thickness and steel", "Light foot traffic and a heavy pad are priced on different sections. We will not use a sidewalk thickness under a trailer."),
-            ("Sawcutting and tie-in", "Cutting a clean edge and doweling into sound concrete takes time, and it is what keeps the new panel from rocking against the old one."),
-            ("Access and haul-off", "Buckets, buggies, and a long carry from the street add labor. So does bagging debris out of a fenced yard."),
-            ("Finish", "Broom finish is standard for walks and pads. A decorative finish belongs on the stamped or stained pages and is priced as that work."),
-        ],
-        "faqs": [
-            ("Can you replace one broken sidewalk square?", "Often, yes, if the squares next to it are stable and we can cut a clean joint. If the whole walk has heaved, replacing one square leaves you with the same trip edge a few feet away. We will tell you how far the failure actually goes."),
-            ("Do you pour shed pads and equipment pads?", "Yes. Tell us the shed size or the weight of what will sit there, and whether you need the pad larger than the building for a mower or a door swing. A thin, unreinforced cap on soft ground will crack under a shed that holds tools and a mower."),
-            ("Can you do the apron without replacing the whole driveway?", "Yes, when the driveway beyond the apron is sound and at a workable height. The apron takes the impact of the street and the gutter. We tie the new apron into the drive and keep the slope so water is not trapped at the garage."),
-            ("Will a new panel match the old concrete color?", "New concrete is lighter and will darken somewhat as it cures, but it rarely disappears into 20-year-old concrete. We can get the finish and the joint close. We will not promise an invisible patch."),
-            ("Do you install public sidewalks for the city?", "We pour private walks, aprons, and the portion of a sidewalk that is the owner's to replace. The public walk in the right-of-way is often a city repair. We will point out where our work should stop so you are not paying to rebuild the city's concrete."),
-            ("How do you handle a small pour the truck cannot reach?", "We buggy or wheel it from the street if the distance is reasonable. If the carry is long or the gate is too narrow, that labor is on the estimate. Some very small pads are placed from a mixer on site. We decide that after we see the access."),
-        ],
-        "next": ("stamped-concrete.html", "Stamped concrete"),
-    },
-]
+from _svc_data import SERVICES
 
 LOCATIONS = [
     {
         "href": "boardman.html",
         "name": "Boardman",
-        "title": "Concrete Contractors in Boardman, Ohio | Concrete Youngstown",
+        "title": "Concrete in Boardman, OH | Youngstown Concrete Contractors",
         "desc": "Concrete driveways, patios, and flatwork in Boardman, Ohio. Slope, salt, and longer suburban drives planned on site. Call (330) 293-2914.",
         "h1": "Concrete Contractors in Boardman, Ohio",
         "intro": "Boardman sits directly south of Youngstown, with longer residential drives and commercial frontage along Route 224. The concrete work is the same valley climate: freeze-thaw, road salt, and soils that hold water. What changes is the lot. Subdivision drives are often longer than a city lot in Youngstown, and a patio behind the house has to share the yard with drainage from a larger roof.",
@@ -301,7 +44,7 @@ LOCATIONS = [
     {
         "href": "austintown.html",
         "name": "Austintown",
-        "title": "Concrete Contractors in Austintown, Ohio | Concrete Youngstown",
+        "title": "Concrete in Austintown, OH | Youngstown Concrete Contractors",
         "desc": "Driveways, aprons, and small pads in Austintown, Ohio. Concrete work for ranch lots and Mahoning Avenue frontage. Call (330) 293-2914.",
         "h1": "Concrete Contractors in Austintown, Ohio",
         "intro": "Austintown is west of Youngstown, a mix of ranch-house streets and commercial lots along Mahoning Avenue. Driveways here take salt from a busy township, and many of the slabs are original to mid-century houses. The failure we see most is a cracked apron at the street and a drive that has settled out of plane with the garage.",
@@ -321,7 +64,7 @@ LOCATIONS = [
     {
         "href": "canfield.html",
         "name": "Canfield",
-        "title": "Concrete Contractors in Canfield, Ohio | Concrete Youngstown",
+        "title": "Concrete in Canfield, OH | Youngstown Concrete Contractors",
         "desc": "Concrete driveways and patios in Canfield, Ohio, including sloped lots and stamped flatwork. Call (330) 293-2914 for a site estimate.",
         "h1": "Concrete Contractors in Canfield, Ohio",
         "intro": "Canfield is southwest of Youngstown, with village streets and larger township lots. Driveways run longer, and more of the calls are patios and decorative walks rather than a short city apron. The winter is the same. A stamped patio still has to sit on a real base, and a drive on a grade still has to keep water out of a walkout basement.",
@@ -341,7 +84,7 @@ LOCATIONS = [
     {
         "href": "poland.html",
         "name": "Poland",
-        "title": "Concrete Contractors in Poland, Ohio | Concrete Youngstown",
+        "title": "Concrete in Poland, OH | Youngstown Concrete Contractors",
         "desc": "Concrete driveways, sidewalks, and patios in Poland, Ohio. Village access and sloped yards handled on site. Call (330) 293-2914.",
         "h1": "Concrete Contractors in Poland, Ohio",
         "intro": "Poland is southeast of Youngstown. Village streets can be tight for a concrete truck, and township properties outside the village often have more grade and a longer approach. The work is driveways, private walks, and patios that deal with freeze-thaw and with water moving across a sloped yard.",
@@ -361,7 +104,7 @@ LOCATIONS = [
     {
         "href": "struthers.html",
         "name": "Struthers",
-        "title": "Concrete Contractors in Struthers, Ohio | Concrete Youngstown",
+        "title": "Concrete in Struthers, OH | Youngstown Concrete Contractors",
         "desc": "Concrete driveway and apron replacement in Struthers, Ohio, including tight lots where the truck stays on the street. Call (330) 293-2914.",
         "h1": "Concrete Contractors in Struthers, Ohio",
         "intro": "Struthers is east of Youngstown, with older houses and shorter driveways. Many pours are garage aprons, narrow drives, and private walks where a truck cannot pull in. Freeze-thaw and salt do the same damage here as on a wider suburban drive. The difference is room: forms, breakout, and the concrete itself often move through a tight side yard.",
@@ -381,7 +124,7 @@ LOCATIONS = [
     {
         "href": "warren.html",
         "name": "Warren",
-        "title": "Concrete Contractors in Warren, Ohio | Concrete Youngstown",
+        "title": "Concrete in Warren, OH | Youngstown Concrete Contractors",
         "desc": "Concrete and asphalt flatwork in Warren, Ohio. Driveways, patios, and small pads for the same winters as Youngstown. Call (330) 293-2914.",
         "h1": "Concrete Contractors in Warren, Ohio",
         "intro": "Warren is north of Youngstown in Trumbull County, close enough that we treat it as part of the regular service area. Winters match the valley: repeated freeze-thaw and salt on streets that never fully dry. We pour and replace driveways, patios, sidewalks, and small pads for houses and for lots that are not highway work.",
@@ -401,7 +144,7 @@ LOCATIONS = [
     {
         "href": "niles.html",
         "name": "Niles",
-        "title": "Concrete Contractors in Niles, Ohio | Concrete Youngstown",
+        "title": "Concrete in Niles, OH | Youngstown Concrete Contractors",
         "desc": "Concrete driveway replacement and patios in Niles, Ohio. Garage height, removal, and cure time set on site. Call (330) 293-2914.",
         "h1": "Concrete Contractors in Niles, Ohio",
         "intro": "Niles sits between Youngstown and Warren. The driveways are a mix of older concrete and asphalt on city lots, with the same salt and frost heave as the rest of the metro. Most replacement jobs start with one question: does the slab come out, or is any of it sound enough to keep?",
@@ -421,7 +164,7 @@ LOCATIONS = [
     {
         "href": "girard.html",
         "name": "Girard",
-        "title": "Concrete Contractors in Girard, Ohio | Concrete Youngstown",
+        "title": "Concrete in Girard, OH | Youngstown Concrete Contractors",
         "desc": "Concrete driveways, walks, and small pads in Girard, Ohio. Tight side yards and salt-damaged edges. Call (330) 293-2914.",
         "h1": "Concrete Contractors in Girard, Ohio",
         "intro": "Girard is a small city just north of Youngstown, between the city and Niles. Lots are often modest, drives are short, and the edges of older slabs crumble where salt and plows hit them. We replace drives, pour walks to detached garages, and put in pads where a side yard is the only way to move material.",
@@ -441,7 +184,7 @@ LOCATIONS = [
     {
         "href": "hubbard.html",
         "name": "Hubbard",
-        "title": "Concrete Contractors in Hubbard, Ohio | Concrete Youngstown",
+        "title": "Concrete in Hubbard, OH | Youngstown Concrete Contractors",
         "desc": "Concrete driveways and patios in Hubbard, Ohio. Clay soils, drainage, and freeze-thaw built into the pour. Call (330) 293-2914.",
         "h1": "Concrete Contractors in Hubbard, Ohio",
         "intro": "Hubbard is east of Youngstown, toward the Pennsylvania line. Residential drives and patios here sit on the clay soils typical of this side of the valley. Clay holds water, and a slab poured on wet, unprepared ground will move. The work is ordinary and specific: compact a base, slope the surface, and joint the concrete so winter has a place to crack it straight.",
@@ -461,7 +204,7 @@ LOCATIONS = [
     {
         "href": "campbell.html",
         "name": "Campbell",
-        "title": "Concrete Contractors in Campbell, Ohio | Concrete Youngstown",
+        "title": "Concrete in Campbell, OH | Youngstown Concrete Contractors",
         "desc": "Concrete driveway, apron, and shed-pad work in Campbell, Ohio. Narrow lots and salt-scaled slabs. Call (330) 293-2914.",
         "h1": "Concrete Contractors in Campbell, Ohio",
         "intro": "Campbell is on Youngstown’s southeast side, with older houses on smaller lots. Driveways are narrow, staging room is limited, and a lot of the concrete has reached the end of a hard life with salt and frost. We replace drives, pour shed pads, and reset aprons. We do not turn the visit into a story about the town. The question is whether the truck stays on the street and how much of the slab is still sound.",
@@ -512,9 +255,48 @@ def words(text):
 def tally_block():
     return f"""<div class="form-card" id="quote">
       <h2>Get a free quote</h2>
-      <p class="form-note">Tell us the town, what you want poured or replaced, and a phone number. The form includes a source field so we know the lead came from Concrete Youngstown. Do not send payment information.</p>
+      <p class="form-note">Tell us the town, what you want poured or replaced, and a phone number. The form includes a source field so we know the lead came from Youngstown Concrete Contractors. Do not send payment information.</p>
       <iframe data-tally-src="{TALLY}" loading="lazy" width="100%" height="552" frameborder="0" marginheight="0" marginwidth="0" title="Get a free quote"></iframe>
     </div>"""
+
+
+def page_hero(crumbs, h1, paras, bg, actions=None, eyebrow=None, extra_class=""):
+    """Page hero with copy on the left and the quote form (id="quote") on the right."""
+    if actions is None:
+        actions = f'<a class="btn btn-red" href="tel:{PHONE_TEL}">Call {PHONE_DISP}</a>'
+    eyebrow_html = f'<p class="eyebrow">{e(eyebrow)}</p>' if eyebrow else ""
+    paras_html = "".join(
+        f'<p class="lede">{p}</p>' if i == 0 else f"<p>{p}</p>" for i, p in enumerate(paras)
+    )
+    return f"""<section class="page-hero hero-with-form {extra_class}" style="--hero: url('{bg}')">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      {crumbs}
+      {eyebrow_html}
+      <h1>{h1}</h1>
+      {paras_html}
+      <div class="hero-actions">{actions}</div>
+    </div>
+    {tally_block()}
+  </div>
+</section>"""
+
+
+def cta_band(title, text):
+    return f"""<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="cta-band">
+      <div>
+        <h2>{e(title)}</h2>
+        <p>{e(text)}</p>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-red" href="tel:{PHONE_TEL}">Call {PHONE_DISP}</a>
+        <a class="btn btn-ghost" href="#quote">Request an estimate</a>
+      </div>
+    </div>
+  </div>
+</section>"""
 
 
 def faq_html(items):
@@ -554,7 +336,7 @@ def header():
 <div class="topbar"><div class="topbar-inner"><span>Youngstown, Ohio</span><a href="tel:{PHONE_TEL}">Call {PHONE_DISP}</a></div></div>
 <header class="header">
   <div class="header-inner">
-    <a class="logo" href="index.html" aria-label="Concrete Youngstown home">{LOGO}<span class="logo-text"><span class="logo-kicker">Concrete</span><span class="logo-name">Youngstown</span></span></a>
+    <a class="logo" href="index.html" aria-label="Youngstown Concrete Contractors home"><img class="logo-img" src="images/logo.png" alt="Youngstown Concrete Contractors" width="154" height="64"></a>
     {nav("")}
     <div class="header-cta">
       <a class="btn btn-line" href="tel:{PHONE_TEL}">{PHONE_DISP}</a>
@@ -583,7 +365,7 @@ def footer():
   <div class="wrap footer-grid">
     <div>
       <h2>Company</h2>
-      <p>Concrete Youngstown pours and replaces driveways, patios, and other flatwork, and paves asphalt, for homes and small lots in Youngstown, Ohio.</p>
+      <p>Youngstown Concrete Contractors pours and replaces driveways, patios, and other flatwork, and paves asphalt, for homes and small lots in Youngstown, Ohio.</p>
       <p><a href="tel:{PHONE_TEL}">{PHONE_DISP}</a><br>Service-area work. No public storefront.</p>
     </div>
     <div>
@@ -606,7 +388,7 @@ def footer():
       {office_hours_block()}
     </div>
   </div>
-  <div class="wrap legal">© 2026 Concrete Youngstown. Estimates come from a look at the property.</div>
+  <div class="wrap legal">© 2026 Youngstown Concrete Contractors. Estimates come from a look at the property.</div>
 </footer>
 <nav class="callbar" aria-label="Call or request a quote">
   <a class="btn btn-line" href="tel:{PHONE_TEL}">Call</a>
@@ -623,11 +405,12 @@ def schema_business():
     data = {
         "@context": "https://schema.org",
         "@type": "GeneralContractor",
-        "name": "Concrete Youngstown",
-        "alternateName": "Youngstown Ohio Concrete Contractors",
+        "name": BRAND,
+        "alternateName": "Concrete Youngstown",
         "url": SITE + "/",
         "telephone": "+1-330-293-2914",
         "image": SITE + "/images/driveways-1.jpg",
+        "logo": SITE + "/images/logo.png",
         "description": "Concrete driveways, patios, stamped and stained flatwork, and asphalt paving for homes and small lots in Youngstown, Ohio and nearby communities.",
         "areaServed": areas,
         "knowsAbout": [s["name"] for s in SERVICES],
@@ -675,7 +458,7 @@ def page(filename, title, desc, body, canonical, image, extra_head="", robots="i
 <link rel="canonical" href="{e(url)}">
 <meta name="theme-color" content="#111111">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<meta property="og:site_name" content="Concrete Youngstown">
+<meta property="og:site_name" content="Youngstown Concrete Contractors">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:url" content="{e(url)}">
@@ -711,13 +494,25 @@ def home():
         <span class="card-body"><h3>{e(s["name"])}</h3><p>{e(s["card"])}</p><span class="more">Details</span></span>
       </a>""")
     towns = "".join(f'<a href="{loc["href"]}">{e(loc["name"])}</a>' for loc in LOCATIONS)
+    gallery_items = [
+        ("images/driveways-2.jpg", "Screeding fresh concrete with a long straightedge"),
+        ("images/stained-2.jpg", "Troweling a concrete floor surface along a wall"),
+        ("images/stamped-1.jpg", "Finishing a concrete slab with a steel trowel"),
+        ("images/asphalt-1.jpg", "Hand-floating wet concrete inside forms"),
+        ("images/installation-2.jpg", "Placing concrete over steel reinforcement on a slab"),
+        ("images/patios-2.jpg", "Concrete discharging from a hopper onto a reinforced slab"),
+    ]
+    gallery = "".join(
+        f'<figure class="service-shot"><img src="{src}" alt="{e(alt)}" loading="lazy" decoding="async"></figure>'
+        for src, alt in gallery_items
+    )
     body = f"""
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
       <p class="kicker">Youngstown, Ohio</p>
-      <h1>Concrete Contractors in Youngstown, Ohio</h1>
-      <p class="lede"><a class="inline" href="concrete-driveways.html">Driveways</a>, <a class="inline" href="concrete-patios.html">patios</a>, <a class="inline" href="stamped-concrete.html">stamped</a> and <a class="inline" href="stained-concrete.html">stained</a> flatwork, and <a class="inline" href="asphalt-paving.html">asphalt paving</a> for houses and small lots. Quoted from the property, not from a photo.</p>
+      <h1>Youngstown Concrete Contractors</h1>
+      <p class="lede">Concrete contractors for Youngstown, Ohio: <a class="inline" href="concrete-driveways.html">driveways</a>, <a class="inline" href="concrete-patios.html">patios</a>, <a class="inline" href="stamped-concrete.html">stamped</a> and <a class="inline" href="stained-concrete.html">stained</a> flatwork, and <a class="inline" href="asphalt-paving.html">asphalt paving</a> for houses and small lots. Quoted from the property, not from a photo.</p>
       <div class="hero-actions">
         <a class="btn btn-ghost" href="tel:{PHONE_TEL}">Call {PHONE_DISP}</a>
       </div>
@@ -733,6 +528,21 @@ def home():
       <p>Start with the surface you need. A salt-scaled driveway, a backyard patio, and a shed pad are not the same job, even though all of them are concrete.</p>
     </div>
     <div class="cards">{"".join(cards)}</div>
+    <p style="margin-top:1.25rem"><a href="services-850767-875359.html">See all services</a></p>
+  </div>
+</section>
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Why choose us</p>
+      <h2>Why Choose Youngstown Concrete Contractors</h2>
+    </div>
+    <div class="factors">
+      <article class="factor"><span>Priced from the property</span><p>We measure the slab, the grade, and the truck access before we write a number. A photo starts the conversation. It does not set the price.</p></article>
+      <article class="factor"><span>Repair or replace, said plainly</span><p>If a panel can stay, we say so. If the slab has failed, we say replacement and explain why, instead of covering it.</p></article>
+      <article class="factor"><span>Built for Youngstown winters</span><p>Base, slope, joints, and drainage are planned for freeze-thaw, road salt, and the clay soils common through the Mahoning Valley.</p></article>
+      <article class="factor"><span>Finish matched to the slab</span><p>Broom finish for most drives. Stamped and stained work where the concrete is new or still sound, not as a cover for damage.</p></article>
+    </div>
   </div>
 </section>
 <section class="section" style="padding-top:0">
@@ -754,7 +564,17 @@ def home():
 <section class="section" style="padding-top:0">
   <div class="wrap">
     <div class="section-head">
-      <p class="kicker">Before you call</p>
+      <p class="kicker">Gallery</p>
+      <h2>Flatwork in progress</h2>
+      <p>Finishing, floating, and placing concrete. Call {PHONE_DISP} to talk about your own slab.</p>
+    </div>
+    <div class="home-gallery">{gallery}</div>
+  </div>
+</section>
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Our process</p>
       <h2>How a concrete job gets priced</h2>
     </div>
     <div class="steps">
@@ -769,9 +589,18 @@ def home():
     <div class="section-head">
       <p class="kicker">Service area</p>
       <h2>Youngstown and nearby towns</h2>
-      <p>We work in Youngstown and the communities around it. The footer links to this list instead of repeating every town. <a href="service-areas.html">All service areas</a>.</p>
+      <p>Youngstown Concrete Contractors works in Youngstown and the communities around it. <a href="service-areas.html">All service areas</a>.</p>
     </div>
     <div class="towns">{towns}</div>
+  </div>
+</section>
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Reviews</p>
+      <h2>Talk to us before you decide</h2>
+      <p>We would rather you hear how we work than read a quote about it. Call <a href="tel:{PHONE_TEL}">{PHONE_DISP}</a> and describe the slab, or send the form above.</p>
+    </div>
   </div>
 </section>
 <section class="section" style="padding-top:0">
@@ -801,8 +630,8 @@ def home():
 """
     page(
         "index.html",
-        "Concrete Contractors in Youngstown, Ohio | Concrete Youngstown",
-        "Concrete driveways, patios, stamped and stained flatwork, and asphalt paving in Youngstown, Ohio. Call (330) 293-2914 for an on-site estimate.",
+        "Youngstown Concrete Contractors | Driveways, Patios & Paving",
+        "Youngstown Concrete Contractors: driveways, patios, stamped and stained concrete, and asphalt paving in Youngstown, OH. Call (330) 293-2914.",
         body,
         SITE + "/",
         SITE + "/images/driveways-2.jpg",
@@ -810,54 +639,76 @@ def home():
     )
 
 
+def rich(text):
+    """Escape text but keep simple internal <a href="...">...</a> links."""
+    parts = []
+    pos = 0
+    for m in re.finditer(r'<a href="([a-z0-9./#-]+)">([^<]+)</a>', text):
+        parts.append(e(text[pos:m.start()]))
+        parts.append(f'<a href="{e(m.group(1))}">{e(m.group(2))}</a>')
+        pos = m.end()
+    parts.append(e(text[pos:]))
+    return "".join(parts)
+
+
+def render_service_sections(sections):
+    out = []
+    for sec in sections:
+        out.append(f'<h2>{e(sec["h2"])}</h2>')
+        if sec.get("lead"):
+            out.append(f'<p>{rich(sec["lead"])}</p>')
+        for p in sec.get("paragraphs") or []:
+            out.append(f"<p>{rich(p)}</p>")
+        if sec.get("bullets"):
+            out.append("<ul>" + "".join(f"<li>{rich(x)}</li>" for x in sec["bullets"]) + "</ul>")
+        for title, body in sec.get("subs") or []:
+            out.append(f"<h3>{e(title)}</h3>")
+            out.append(f"<p>{rich(body)}</p>")
+        if sec.get("steps"):
+            steps = "".join(
+                f'<article class="step"><span>{e(n)}</span><h3>{e(title)}</h3><p>{rich(body)}</p></article>'
+                for n, title, body in sec["steps"]
+            )
+            out.append(f'<div class="steps">{steps}</div>')
+    return "\n".join(out)
+
+
 def service_page(s):
-    steps = "".join(
-        f'<article class="step"><span>{n}</span><h3>{e(title)}</h3><p>{e(text)}</p></article>'
-        for n, title, text in s["process"]
-    )
-    factors = "".join(
-        f'<article class="factor"><span>{e(title)}</span><p>{e(text)}</p></article>'
-        for title, text in s["costs"]
-    )
     others = [o for o in SERVICES if o["href"] != s["href"]]
     related = "".join(f'<li><a href="{o["href"]}">{e(o["name"])}</a></li>' for o in others)
-    second = others[(SERVICES.index(s)) % len(others)]
+    second = others[SERVICES.index(s) % len(others)]
     gallery = (
         f'<div class="service-gallery">'
         f'<figure class="service-shot"><img src="{s["img"]}" alt="{e(s["alt"])}" loading="lazy" decoding="async"></figure>'
         f'<figure class="service-shot"><img src="{second["img"]}" alt="{e(second["alt"])}" loading="lazy" decoding="async"></figure>'
-        f'</div>'
+        f"</div>"
     )
     towns = "".join(f'<a href="{loc["href"]}">{e(loc["name"])}</a>' for loc in LOCATIONS)
-    estimate = "contact.html#quote"
+    intro = s["intro"] if isinstance(s["intro"], (list, tuple)) else [s["intro"]]
+    hero = page_hero(
+        "",
+        e(s["h1"]),
+        [e(x) for x in intro],
+        s["hero"],
+        actions=f'<a class="btn btn-red" href="tel:{PHONE_TEL}">Call {PHONE_DISP} for a Free Estimate</a>',
+        eyebrow=s["name"],
+        extra_class="service-hero",
+    )
+    next_href, next_label = s["next"]
+    cta_title = s.get("cta_title") or ("Request a Free " + s["name"] + " Estimate")
+    cta_text = s.get("cta_text") or (
+        "Contact Youngstown Concrete Contractors to discuss your project."
+    )
     body = f"""
 <div class="crumb-bar"><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> · <a href="services-850767-875359.html">Services</a> · <span aria-current="page">{e(s["name"])}</span></nav></div></div>
-<section class="page-hero service-hero" style="--hero: url('{s["hero"]}')">
-  <div class="wrap service-hero-inner">
-    <p class="eyebrow">{e(s["name"])}</p>
-    <h1>{e(s["h1"])}</h1>
-    <p class="lede">{e(s["intro"])}</p>
-    <div class="hero-actions">
-      <a class="btn btn-red" href="tel:{PHONE_TEL}">Call {PHONE_DISP}</a>
-      <a class="btn btn-ghost" href="{estimate}">Request an estimate</a>
-    </div>
-  </div>
-</section>
+{hero}
 <section class="section service-body">
   <div class="wrap service-layout">
     <div class="service-main">
       {gallery}
       <div class="prose service-copy">
-        <h2>{e(s["when_title"])}</h2>
-        {li(s["when"])}
-        <h2>{e(s["aside_title"])}</h2>
-        <p>{e(s["aside"])}</p>
-        <h2>How the work goes</h2>
-        <div class="steps">{steps}</div>
-        <h2>What changes the estimate</h2>
-        <p>We do not publish a price per square foot. These are the items that move a quote once we see the lot.</p>
-        <div class="factors">{factors}</div>
-        <h2>Before you schedule</h2>
+        {render_service_sections(s["sections"])}
+        <h2>Frequently Asked Questions</h2>
         {faq_html(s["faqs"])}
       </div>
     </div>
@@ -867,7 +718,7 @@ def service_page(s):
         <p>Call or send the address and what the slab is for. We will tell you if it is a repair, a replacement, or a different finish than you started with.</p>
         <p class="side-phone"><a href="tel:{PHONE_TEL}">{PHONE_DISP}</a></p>
         <p class="side-hours">{OFFICE_HOURS}</p>
-        <p><a class="btn btn-red" href="{estimate}">Request an estimate</a></p>
+        <p><a class="btn btn-red" href="#quote">Request an estimate</a></p>
       </div>
       <div class="side-card side-card-muted">
         <p class="side-kicker">Related</p>
@@ -880,9 +731,10 @@ def service_page(s):
   <div class="wrap">
     <h2>Towns we serve</h2>
     <div class="towns">{towns}</div>
-    <p style="margin-top:1rem"><a href="service-areas.html">Service areas</a> · <a href="{estimate}">Request an estimate</a> · <a href="services-850767-875359.html">All services</a></p>
+    <p style="margin-top:1rem"><a href="service-areas.html">Service areas</a> · <a href="{next_href}">{e(next_label)}</a> · <a href="services-850767-875359.html">All services</a></p>
   </div>
 </section>
+{cta_band(cta_title, cta_text)}
 """
     page(
         s["href"],
@@ -891,7 +743,14 @@ def service_page(s):
         body,
         SITE + "/" + s["href"],
         SITE + "/" + s["img"],
-        schema_faq(s["faqs"]) + crumbs_schema([("Home", ""), ("Services", "services-850767-875359.html"), (s["name"], s["href"])]),
+        schema_faq(s["faqs"])
+        + crumbs_schema(
+            [
+                ("Home", ""),
+                ("Services", "services-850767-875359.html"),
+                (s["name"], s["href"]),
+            ]
+        ),
     )
 
 
@@ -903,20 +762,12 @@ def services_index():
         <span class="card-body"><h3>{e(s["name"])}</h3><p>{e(s["card"])}</p><span class="more">Details</span></span>
       </a>""")
     body = f"""
-<section class="page-hero" style="--hero: url('images/services.jpg')">
-  <div class="wrap">
-    <p class="crumbs"><a href="index.html">Home</a> · Services</p>
-    <h1>Concrete Services in Youngstown, Ohio</h1>
-    <p>Six kinds of flatwork, each with its own page. Pick the one that matches the slab you have, or call {PHONE_DISP} and describe the failure. We will point you to the right scope.</p>
-    <div class="hero-actions"><a class="btn btn-red" href="tel:{PHONE_TEL}">Call {PHONE_DISP}</a><a class="btn btn-ghost" href="#quote">Request an estimate</a></div>
-  </div>
-</section>
+{page_hero('<p class="crumbs"><a href="index.html">Home</a> · Services</p>', "Concrete Services in Youngstown, Ohio", ["Six kinds of flatwork, each with its own page. Pick the one that matches the slab you have, or call " + PHONE_DISP + " and describe the failure. We will point you to the right scope."], "images/services.jpg")}
 <section class="section"><div class="wrap"><div class="cards">{"".join(cards)}</div></div></section>
-<section class="section" style="padding-top:0"><div class="wrap">{tally_block()}</div></section>
 """
     page(
         "services-850767-875359.html",
-        "Concrete Services in Youngstown, Ohio | Concrete Youngstown",
+        "Concrete Services | Youngstown Concrete Contractors",
         "Driveways, patios, stamped concrete, stained concrete, flatwork, and asphalt paving in Youngstown, Ohio. Call (330) 293-2914.",
         body,
         SITE + "/services-850767-875359.html",
@@ -932,14 +783,7 @@ def location_page(loc):
     )
     others = "".join(f'<a href="{o["href"]}">{e(o["name"])}</a>' for o in LOCATIONS if o["href"] != loc["href"])
     body = f"""
-<section class="page-hero" style="--hero: url('images/driveways-1.jpg')">
-  <div class="wrap">
-    <p class="crumbs"><a href="index.html">Home</a> · <a href="service-areas.html">Service areas</a> · {e(loc["name"])}</p>
-    <h1>{e(loc["h1"])}</h1>
-    <p>{e(loc["intro"])}</p>
-    <div class="hero-actions"><a class="btn btn-red" href="tel:{PHONE_TEL}">Call {PHONE_DISP}</a><a class="btn btn-ghost" href="#quote">Request an estimate</a></div>
-  </div>
-</section>
+{page_hero('<p class="crumbs"><a href="index.html">Home</a> · <a href="service-areas.html">Service areas</a> · ' + e(loc["name"]) + '</p>', e(loc["h1"]), [e(loc["intro"])], "images/driveways-1.jpg")}
 <section class="section">
   <div class="wrap">
     <div class="media-row">
@@ -970,7 +814,6 @@ def location_page(loc):
     <p style="margin-top:1rem"><a href="service-areas.html">Back to all service areas</a></p>
   </div>
 </section>
-<section class="section" style="padding-top:0"><div class="wrap">{tally_block()}</div></section>
 """
     page(
         loc["href"],
@@ -994,14 +837,7 @@ def service_areas():
                 text += "."
         blocks.append(f'<article class="factor"><span><a href="{loc["href"]}">{e(loc["name"])}, Ohio</a></span><p>{e(text)}</p></article>')
     body = f"""
-<section class="page-hero" style="--hero: url('images/driveways-2.jpg')">
-  <div class="wrap">
-    <p class="crumbs"><a href="index.html">Home</a> · Service areas</p>
-    <h1>Concrete Service Areas around Youngstown</h1>
-    <p>Concrete Youngstown works in Youngstown and the towns around it in Mahoning County and nearby Trumbull County. Each page below is about the flatwork on those lots: access, drainage, salt, and the kind of slab we are usually replacing. It is not a town history.</p>
-    <div class="hero-actions"><a class="btn btn-red" href="tel:{PHONE_TEL}">Call {PHONE_DISP}</a></div>
-  </div>
-</section>
+{page_hero('<p class="crumbs"><a href="index.html">Home</a> · Service areas</p>', "Concrete Service Areas around Youngstown", ["Youngstown Concrete Contractors works in Youngstown and the towns around it in Mahoning County and nearby Trumbull County. Each page below is about the flatwork on those lots: access, drainage, salt, and the kind of slab we are usually replacing. It is not a town history."], "images/driveways-2.jpg")}
 <section class="section"><div class="wrap"><div class="factors">{"".join(blocks)}</div></div></section>
 <section class="section" style="padding-top:0">
   <div class="wrap prose">
@@ -1009,11 +845,10 @@ def service_areas():
     <p>In the city, drives are often shorter, trucks have less room, and the concrete has already lived through a lot of salt. The service pages for <a href="concrete-driveways.html">driveways</a>, <a href="concrete-patios.html">patios</a>, <a href="stamped-concrete.html">stamped concrete</a>, <a href="stained-concrete.html">stained concrete</a>, <a href="asphalt-paving.html">asphalt</a>, and <a href="concrete-installation.html">other flatwork</a> are written for that work. If your street is in Youngstown, start there or send the form.</p>
   </div>
 </section>
-<section class="section" style="padding-top:0"><div class="wrap">{tally_block()}</div></section>
 """
     page(
         "service-areas.html",
-        "Concrete Service Areas near Youngstown, Ohio",
+        "Service Areas | Youngstown Concrete Contractors",
         "Concrete and asphalt flatwork in Youngstown, Boardman, Austintown, Canfield, Poland, Struthers, Warren, Niles, Girard, Hubbard, and Campbell.",
         body,
         SITE + "/service-areas.html",
@@ -1024,14 +859,7 @@ def service_areas():
 
 def about():
     body = f"""
-<section class="page-hero" style="--hero: url('images/services.jpg')">
-  <div class="wrap">
-    <p class="crumbs"><a href="index.html">Home</a> · About</p>
-    <h1>About Concrete Youngstown</h1>
-    <p>We are a service-area concrete crew for Youngstown and the towns around it. Driveways, patios, stamped and stained flatwork, sidewalks, small pads, and asphalt paving. There is no showroom and no public storefront. The estimate starts with the slab you have.</p>
-    <div class="hero-actions"><a class="btn btn-red" href="tel:{PHONE_TEL}">Call {PHONE_DISP}</a><a class="btn btn-ghost" href="contact.html">Contact</a></div>
-  </div>
-</section>
+{page_hero('<p class="crumbs"><a href="index.html">Home</a> · About</p>', "About Youngstown Concrete Contractors", ["Youngstown Concrete Contractors is a service-area concrete crew for Youngstown and the towns around it. Driveways, patios, stamped and stained flatwork, sidewalks, small pads, and asphalt paving. There is no showroom and no public storefront. The estimate starts with the slab you have."], "images/services.jpg")}
 <section class="section">
   <div class="wrap split">
     <div class="prose">
@@ -1046,12 +874,11 @@ def about():
     </div>
   </div>
 </section>
-<section class="section" style="padding-top:0"><div class="wrap">{tally_block()}</div></section>
 """
     page(
         "about.html",
-        "About Concrete Youngstown | Youngstown, Ohio",
-        "Concrete Youngstown is a service-area crew for driveways, patios, decorative flatwork, and asphalt in Youngstown, Ohio. Call (330) 293-2914.",
+        "About Youngstown Concrete Contractors | Youngstown, OH",
+        "Youngstown Concrete Contractors is a service-area crew for driveways, patios, decorative flatwork, and asphalt in Youngstown, Ohio. Call (330) 293-2914.",
         body,
         SITE + "/about.html",
         SITE + "/images/services.jpg",
@@ -1061,18 +888,25 @@ def about():
 
 def contact():
     body = f"""
-<section class="page-hero" style="--hero: url('images/installation-1.jpg')">
-  <div class="wrap">
-    <p class="crumbs"><a href="index.html">Home</a> · Contact</p>
-    <h1>Request a Concrete Estimate</h1>
-    <p>Call <a class="inline" href="tel:{PHONE_TEL}">{PHONE_DISP}</a> or use the form. Include the city, whether this is a new pour or a replacement, and roughly what the slab is for. We schedule a look before we price it.</p>
+{page_hero('<p class="crumbs"><a href="index.html">Home</a> · Contact</p>', "Request a Concrete Estimate", ['Call <a class="inline" href="tel:' + PHONE_TEL + '">' + PHONE_DISP + '</a> or use the form. Include the city, whether this is a new pour or a replacement, and roughly what the slab is for. We schedule a look before we price it.'], "images/installation-1.jpg")}
+<section class="section">
+  <div class="wrap split">
+    <div class="prose">
+      <h2>Reach Youngstown Concrete Contractors</h2>
+      <p>Phone: <a href="tel:{PHONE_TEL}">{PHONE_DISP}</a></p>
+      <p>Service-area work. No public storefront. We serve Youngstown and nearby towns listed on the <a href="service-areas.html">service areas</a> page.</p>
+      <p>Not sure which service fits? Start with the <a href="services-850767-875359.html">services</a> overview.</p>
+    </div>
+    <div>
+      <h2>Office hours</h2>
+      {office_hours_block()}
+    </div>
   </div>
 </section>
-<section class="section"><div class="wrap">{tally_block()}</div></section>
 """
     page(
         "contact.html",
-        "Contact Concrete Youngstown | Free Concrete Estimate",
+        "Contact Youngstown Concrete Contractors | Free Estimate",
         "Call (330) 293-2914 or request a concrete estimate in Youngstown, Ohio. Driveways, patios, stamped concrete, stain, and asphalt.",
         body,
         SITE + "/contact.html",
@@ -1084,22 +918,14 @@ def contact():
 def faq_page():
     all_items = HOME_FAQS + MORE_FAQS
     body = f"""
-<section class="page-hero" style="--hero: url('images/patios-1.jpg')">
-  <div class="wrap">
-    <p class="crumbs"><a href="index.html">Home</a> · FAQs</p>
-    <h1>Concrete Questions in Youngstown</h1>
-    <p>Straight answers about cost, replacement, decorative finishes, and where we work. Service pages have more specific questions for that slab.</p>
-    <div class="hero-actions"><a class="btn btn-red" href="tel:{PHONE_TEL}">Call {PHONE_DISP}</a></div>
-  </div>
-</section>
+{page_hero('<p class="crumbs"><a href="index.html">Home</a> · FAQs</p>', "Concrete Questions in Youngstown", ["Straight answers about cost, replacement, decorative finishes, and where we work. Service pages have more specific questions for that slab."], "images/patios-1.jpg")}
 <section class="section"><div class="wrap">{faq_html(all_items)}
   <p>Looking for a single service? Read the <a href="concrete-driveways.html">driveway</a>, <a href="concrete-patios.html">patio</a>, <a href="stamped-concrete.html">stamped</a>, <a href="stained-concrete.html">stained</a>, <a href="asphalt-paving.html">asphalt</a>, or <a href="concrete-installation.html">installation</a> page.</p>
 </div></section>
-<section class="section" style="padding-top:0"><div class="wrap">{tally_block()}</div></section>
 """
     page(
         "faq.html",
-        "Concrete FAQs for Youngstown, Ohio | Concrete Youngstown",
+        "Concrete FAQs | Youngstown Concrete Contractors",
         "Answers about concrete driveway cost, replacement, stamped and stained finishes, and service towns around Youngstown. Call (330) 293-2914.",
         body,
         SITE + "/faq.html",
