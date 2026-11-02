@@ -255,7 +255,6 @@ def words(text):
 def tally_block():
     return f"""<div class="form-card" id="quote">
       <h2>Get a free quote</h2>
-      <p class="form-note">Tell us the town, what you want poured or replaced, and a phone number. The form includes a source field so we know the lead came from Youngstown Concrete Contractors. Do not send payment information.</p>
       <iframe data-tally-src="{TALLY}" loading="lazy" width="100%" height="552" frameborder="0" marginheight="0" marginwidth="0" title="Get a free quote"></iframe>
     </div>"""
 
@@ -511,8 +510,8 @@ def home():
   <div class="wrap hero-grid">
     <div>
       <p class="kicker">Youngstown, Ohio</p>
-      <h1>Youngstown Concrete Contractors</h1>
-      <p class="lede">Concrete contractors for Youngstown, Ohio: <a class="inline" href="concrete-driveways.html">driveways</a>, <a class="inline" href="concrete-patios.html">patios</a>, <a class="inline" href="stamped-concrete.html">stamped</a> and <a class="inline" href="stained-concrete.html">stained</a> flatwork, and <a class="inline" href="asphalt-paving.html">asphalt paving</a> for houses and small lots. Quoted from the property, not from a photo.</p>
+      <h1>Concrete Contractors Youngstown Ohio</h1>
+      <p class="lede">Youngstown Ohio Concrete Contractors provides professional residential and commercial concrete services throughout Youngstown, Ohio, and surrounding communities. We specialize in <a class="inline" href="concrete-driveways.html">concrete driveway installation and replacement</a>, <a class="inline" href="concrete-patios.html">concrete patios</a>, <a class="inline" href="stamped-concrete.html">stamped concrete</a>, <a class="inline" href="stained-concrete.html">stained concrete</a>, and <a class="inline" href="asphalt-paving.html">asphalt paving</a> for homes, businesses, and small parking lots. Whether you're looking to replace a cracked driveway, install a beautiful backyard patio, upgrade your outdoor space with decorative concrete, or improve your property's curb appeal, our team delivers quality workmanship and durable, long-lasting results. We focus on proper site preparation, reliable materials, attention to detail, and customer satisfaction on every project. Unlike contractors who provide estimates based solely on photographs, we evaluate your property in person to provide accurate quotes tailored to your specific needs. From small residential improvements to larger commercial concrete projects, Youngstown Ohio Concrete Contractors is committed to dependable service, competitive pricing, and professional results.</p>
       <div class="hero-actions">
         <a class="btn btn-ghost" href="tel:{PHONE_TEL}">Call {PHONE_DISP}</a>
       </div>
@@ -630,8 +629,8 @@ def home():
 """
     page(
         "index.html",
-        "Youngstown Concrete Contractors | Driveways, Patios & Paving",
-        "Youngstown Concrete Contractors: driveways, patios, stamped and stained concrete, and asphalt paving in Youngstown, OH. Call (330) 293-2914.",
+        "Concrete Contractors Youngstown Ohio | Concrete Driveways, Patios, Walkways",
+        "Youngstown Ohio Concrete Contractors provides residential and commercial concrete services in Youngstown, OH: driveways, patios, stamped and stained concrete, and asphalt paving. Call (330) 293-2914.",
         body,
         SITE + "/",
         SITE + "/images/driveways-2.jpg",
